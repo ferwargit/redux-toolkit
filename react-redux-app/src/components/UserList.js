@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+// redux
+import { fetchAllUsers } from '../store/slices/users';
+import { useDispatch, useSelector } from 'react-redux';
 
 const UserList = () => {
-  const users = [
-    {
+
+  const { list: users } = useSelector(state => state.users)
+
+  const dispatch = useDispatch();
+
+  // const users = [
+    /* {
       id: 1,
       email: "george.bluth@reqres.in",
       first_name: "George",
@@ -29,18 +37,23 @@ const UserList = () => {
       first_name: "Eve",
       last_name: "Holt",
       avatar: "https://reqres.in/img/faces/4-image.jpg",
-    },
-  ];
+    }, */
+  // ]
+
+  useEffect(() => {
+      dispatch(fetchAllUsers());
+  },[dispatch])
 
   return (
-    <div className="container">
+    <div className="container mt-4">
       {/* En cada columna de la row hay una tarjeta con un usuario */}
       <div className="row">
         {/* Necesito iterar a los users usando la funcion map que dentro
             tiene una funcion con un return implicito y dentro un div, recibe
             a un usuario y un index que lo utilizo para el key*/}
-        {users.map((user, index) => (
-          <div key={index} className="col-md-3">
+        {
+        users.map((user, index) => (
+          <div key={index} className="col-md-3 mb-4">
             <div className="card">
               <img src={user.avatar} alt="avatar" />
               <div className="card-body">
@@ -49,7 +62,8 @@ const UserList = () => {
               </div>
             </div>
           </div>
-        ))}
+        ))
+        }
       </div>
     </div>
   );
